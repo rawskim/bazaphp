@@ -10,4 +10,32 @@ function init_baza() {
 
 }
 
+function init_tables() {
+	global $db;
+	if(file_exists('baza/baza.sql')){
+		$q = "SELECT name FROM sqlite_master WHERE type='table' AND name='menu'";
+		$ret = array();
+		db_query($q, $ret);
+		if (empty($ret)) {
+			$sql = file_get_contents('baza/baza.sql')
+			$db->exec();
+		}
+	}
+}
+
+function db_query($q, &$ret){
+	global $db;
+	$r = null;
+	try {
+		$r = $db->query($q);
+	} catch(PDOException $e) {
+		echo.($e->getMessage());
+	}
+	if($r) {
+		$ret = $r->fetchAll();
+		return true;
+	}
+	return false;
+}
+
  ?>
